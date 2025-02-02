@@ -10,12 +10,7 @@ export default function BodyModel() {
   const [side, setSide] = useState<"front" | "back">("front");
   const [gender, setGender] = useState<"male" | "female">("male");
 
-  const [selectedBodyPart, setSelectedBodyPart] = useState<ExtendedBodyPart>({
-    slug: "biceps",
-    intensity: 2,
-    side: "right",
-  });
-
+  const [tappedElements, setTappedElements] = useState<{ slug: string; intensity: number; side: "front" | "back" }[]>([]);
   const sideSwitch = () => {
     setSide((prev) => (prev === "front" ? "back" : "front"));
   };
@@ -27,18 +22,23 @@ export default function BodyModel() {
   return (
     <View style={styles.container}>
       <Body
-        data={[
-          selectedBodyPart,
-        ]}
-        onBodyPartPress={(e: { slug: string }, side: "front" | "back") =>
-          setSelectedBodyPart({ slug: e.slug, intensity: 2, side})
-        }
-        colors={['#0000ff', '#0000ff']}
-        gender={gender}
-        side={side}
-        scale={1.7}
-        border="#dfdfdf"
-      />
+      data={tappedElements}  // Pass the array directly
+      onBodyPartPress={(e: { slug: string }, side: "front" | "back") => {
+        setTappedElements(prevState => {
+          const exists = prevState.find(item => item.slug === e.slug && item.side === side);
+
+          return exists
+            ? prevState.filter(item => !(item.slug === e.slug && item.side === side))  // Remove if exists
+            : [...prevState, { slug: e.slug, intensity: 2, side }];  // Add if not
+        });
+        console.log(tappedElements);
+      }}
+      colors={['#0000ff', '#0000ff']}
+      gender={gender}
+      side={side}
+      scale={1.7}
+      border="#dfdfdf"
+    />
       <View style={styles.switchContainer}>
         <View style={styles.switch}>
           <Text>Side ({side})</Text>

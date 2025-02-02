@@ -31,14 +31,14 @@ const SkeletalModel = () => {
 
   const handleElementPress = (id) => {
     // Toggle the color for the element with this id
-    let parentId = findIdParent(id);
-    if (parentId){
+   //  let parentId = findIdParent(id);
+    if (id){
     setTappedElements((prevState) => {
       const newTappedElements = new Set(prevState);
-      if (newTappedElements.has(parentId)) {
-        newTappedElements.delete(parentId); // Remove if already tapped
+      if (newTappedElements.has(id)) {
+        newTappedElements.delete(id); // Remove if already tapped
       } else {
-        newTappedElements.add(parentId); // Add if not tapped
+        newTappedElements.add(id); // Add if not tapped
       }
       return newTappedElements;
     });
@@ -48,13 +48,11 @@ const SkeletalModel = () => {
 
   // Define the color based on whether it's tapped or not
   const getColor = (id) => {
-   let parentId = findIdParent(id);
-    return tappedElements.has(parentId) ? '#0000FF' : '#454545'; // Blue if tapped, grey if not
+    return tappedElements.has(id) ? '#0000FF' : '#454545'; // Blue if tapped, grey if not
   };
 
   return (
     <View>
-      <Text>Select a body part</Text>
       <Svg width={400} height={1200} viewBox="0 0 400 1200">
       <G
 id="layer4"

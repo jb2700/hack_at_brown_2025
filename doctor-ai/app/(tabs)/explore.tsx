@@ -35,11 +35,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   titleContainer: {
+    marginTop: 40,
     flexDirection: 'row',
     gap: 8,
   },
   bodyModelContainer: {
     marginTop: 20,
+    marginBottom: 40,
     alignItems: 'center',
     justifyContent: 'center',
   },
