@@ -5,6 +5,7 @@ import MuscleModel from './MuscleModel';  // Assuming the path is correct
 import SkeletalModel from './SkeletalModel'; // Assuming the path is correct
 
 type BodyViewProps = {
+    painSeverity: number;
     tappedElements: { slug: string; intensity: number; side: "front" | "back" }[];
     setTappedElements: React.Dispatch<React.SetStateAction<{ slug: string; intensity: number; side: "front" | "back" }[]>>;
     tappedElementsSkeletal: Set<string>;
@@ -12,17 +13,17 @@ type BodyViewProps = {
   };
 
 const BodyView: React.FC<BodyViewProps> = ({ 
+  painSeverity,
   tappedElements, 
   setTappedElements, 
   tappedElementsSkeletal, 
   setTappedElementsSkeletal 
 }) => {
 
-
   return (
     <View style={styles.container}>
-      <MuscleModel setTappedElements={setTappedElements} />
-      <SkeletalModel setTappedElements={setTappedElementsSkeletal} />
+      <MuscleModel painSeverity={painSeverity} setTappedElements={setTappedElements} />
+      <SkeletalModel painSeverity={painSeverity} setTappedElements={setTappedElementsSkeletal} />
     </View>
   );
 };

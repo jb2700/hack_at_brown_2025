@@ -4,6 +4,7 @@ import { View, StyleSheet, Switch, Text } from 'react-native';
 import Body from 'react-native-body-highlighter';
 
 interface MuscleModelProps {
+  painSeverity: number;
   setTappedElements: React.Dispatch<React.SetStateAction<{ slug: string; intensity: number; side: 'front' | 'back' }[]>>;
 }
 
@@ -37,7 +38,7 @@ export default function MuscleModel({ setTappedElements }: MuscleModelProps) {
               : [...prevState, { slug: e.slug, intensity: 2, side }];  // Add if not
           });
         }}
-        colors={['#0000ff', '#0000ff']}
+        colors={['#ff0000', '#ff0000']}
         gender={gender}
         side={side}
         scale={1.7}

@@ -52,7 +52,7 @@ const CreateIssueScreen = () => {
           thumbTintColor="#FF6347"
         />
       </View>
-      <BodyView tappedElements={tappedElements}
+      <BodyView painSeverity={painSeverity} tappedElements={tappedElements}
         setTappedElements={setTappedElements}
         tappedElementsSkeletal={tappedElementsSkeletal}
         setTappedElementsSkeletal={setTappedElementsSkeletal}/>

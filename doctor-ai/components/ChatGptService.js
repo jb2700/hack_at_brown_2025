@@ -4,8 +4,7 @@ import axios from 'axios';
 
 // import { OpenAI } from 'openai';
 const CHATGPT_API_URL = 'https://api.openai.com/v1/completions';
-const CHATGPT_API_KEY = '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';
-
+const CHATGPT_API_KEY = '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'
 
 const API_URL = 'https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct';
 const HUGGING_FACE_API_KEY = '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';

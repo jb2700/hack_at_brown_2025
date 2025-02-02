@@ -36,6 +36,7 @@
     "openai": "^4.82.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
+    "react-markdown": "^9.0.3",
     "react-native": "0.76.6",
     "react-native-3d-model-view": "^1.2.0",
     "react-native-body-highlighter": "^3.1.3",
