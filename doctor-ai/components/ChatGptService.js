@@ -1,8 +1,6 @@
 import axios from 'axios';
 import hugg from './../lib/hugging';
 // import { OpenaiKey } from './../lib/chatgpt';
-const CHATGPT_API_URL = 'https://api.openai.com/v1/completions';
-const CHATGPT_API_KEY = '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';
 
 import { OpenAI } from 'openai';
 
@@ -11,9 +9,6 @@ const openai = new OpenAI({
   apiKey: CHATGPT_API_KEY, // Use your actual OpenAI API key here
   baseURL: 'https://api.openai.com/v1', // Set API base URL (default)
 });
-
-const API_URL = 'https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct';
-const HUGGING_FACE_API_KEY = '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';
 
 export const getChatGPTResponse = async (prompt) => {
   try {

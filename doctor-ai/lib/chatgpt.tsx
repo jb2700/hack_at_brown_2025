@@ -1,3 +1,2 @@
 
 
-export const OpenaiKey = "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"
