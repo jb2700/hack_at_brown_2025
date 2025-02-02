@@ -1,30 +1,36 @@
 import React, { useState } from 'react';
-import { Text, TextInput, TouchableOpacity, StyleSheet, View } from 'react-native';
-import { useAuth } from './../../hooks/useAuth'; 
-import { useNavigation } from '@react-navigation/native';
+import { View, TextInput, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
+import { supabase } from '../../lib/supabase'; 
 
-const LoginScreen = () => {
+const LoginPage = () => {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
-  const { login } = useAuth(); 
-  const navigation = useNavigation();
-  const router = useRouter();
 
   const handleLogin = async () => {
     try {
-      await login(email, password); 
-      // navigation.replace('Home'); 
-      router.push('/home');
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) throw error;
+
+      // After login, check the session
+      const session = await supabase.auth.getSession();
+      if (session) {
+        router.push('/home'); 
+      } else {
+        console.log('No active session.');
+      }
     } catch (error) {
-      console.log(error);
+      console.error('Login error:', error);
     }
   };
 
   return (
     <View style={styles.container}>
-      {errorMessage && <Text style={styles.error}>{errorMessage}</Text>}
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -34,16 +40,13 @@ const LoginScreen = () => {
       <TextInput
         style={styles.input}
         placeholder="Password"
+        secureTextEntry
         value={password}
         onChangeText={setPassword}
-        secureTextEntry
       />
-      <TouchableOpacity onPress={handleLogin} style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
-      {/* <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-        <Text style={styles.link}>Don't have an account? Sign Up</Text>
-      </TouchableOpacity> */}
     </View>
   );
 };
@@ -52,36 +55,27 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    padding: 20,
+    padding: 16,
+    backgroundColor: '#fff',
   },
   input: {
     height: 50,
-    borderColor: 'gray',
+    borderColor: '#ccc',
     borderWidth: 1,
-    marginBottom: 10,
+    marginBottom: 12,
     paddingLeft: 10,
+    borderRadius: 4,
   },
   button: {
-    backgroundColor: '#1177C7',
-    padding: 15,
-    borderRadius: 5,
-    alignItems: 'center',
+    backgroundColor: '#007BFF',
+    paddingVertical: 15,
+    borderRadius: 4,
   },
   buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  link: {
-    color: '#1177C7',
     textAlign: 'center',
-    marginTop: 20,
-  },
-  error: {
-    color: 'red',
-    textAlign: 'center',
-    marginBottom: 10,
+    color: '#fff',
+    fontSize: 16,
   },
 });
 
-export default LoginScreen;
-
+export default LoginPage;

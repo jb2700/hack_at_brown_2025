@@ -15,7 +15,6 @@ const CreateIssueScreen = () => {
       details: `Pain Severity: ${painSeverity}`,
     };
 
-
     router.push(`/home?id=${newIssue.id}&title=${newIssue.title}&details=${newIssue.details}`);
   };
 

@@ -1,171 +1,7 @@
-// import React, { useState } from 'react';
-// import { View, Text, TextInput, Button, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
-
-// interface Issue {
-//   id: string;
-//   title: string;
-//   details: string;
-// }
-
-// const UserHomePage = () => {
-//   const [issues, setIssues] = useState<Issue[]>([]);
-//   const [newIssue, setNewIssue] = useState<string>('');
-//   const [expandedIssue, setExpandedIssue] = useState<string | null>(null); 
-
-//   // Add new issue function
-//   const addIssue = () => {
-//     if (newIssue.trim()) {
-//       const newIssueObj: Issue = {
-//         id: Date.now().toString(), 
-//         title: newIssue,
-//         details: 'More information about this issue', 
-//       };
-//       setIssues([...issues, newIssueObj]);
-//       setNewIssue(''); 
-//     }
-//   };
-
-//   // Handle expanding or collapsing an issue
-//   const handleIssueClick = (id: string) => {
-//     setExpandedIssue(expandedIssue === id ? null : id); 
-//   };
-
-//   // Update issue details when typing
-//   const handleDetailsChange = (id: string, newDetails: string) => {
-//     setIssues((prevIssues) =>
-//       prevIssues.map((issue) =>
-//         issue.id === id ? { ...issue, details: newDetails } : issue
-//       )
-//     );
-//   };
-
-//   // Render each issue
-//   const renderIssue = ({ item }: { item: Issue }) => (
-//     <View style={styles.issueContainer}>
-//       <TouchableOpacity onPress={() => handleIssueClick(item.id)}>
-//         <Text style={styles.issueTitle}>{item.title}</Text>
-//       </TouchableOpacity>
-//       {expandedIssue === item.id && (
-//         <View style={styles.issueDetails}>
-//           <TextInput
-//             style={styles.detailsInput}
-//             value={item.details}
-//             onChangeText={(text) => handleDetailsChange(item.id, text)}
-//             multiline
-//           />
-//         </View>
-//       )}
-//     </View>
-//   );
-
-//   // Handle 'Enter' key to add issue
-//   const handleKeyPress = (e: any) => {
-//     if (e.nativeEvent.key === 'Enter') {
-//       addIssue();
-//     }
-//   };
-
-//   return (
-//     <View style={styles.container}>
-//       <Text style={styles.header}>Issues</Text>
-
-
-//       <View style={styles.addIssueContainer}>
-//         <TextInput
-//           style={styles.input}
-//           placeholder="Enter new health issue"
-//           value={newIssue}
-//           onChangeText={setNewIssue}
-//           onSubmitEditing={addIssue} // Add issue when pressing enter
-//           returnKeyType="done" // Make "Done" button show on the keyboard
-//         />
-//       </View>
-
-//       {/* List of issues */}
-//       <FlatList
-//         data={issues}
-//         renderItem={renderIssue}
-//         keyExtractor={(item) => item.id}
-//       />
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     padding: 20,
-//     backgroundColor: '#fff',
-//   },
-//   header: {
-//     fontSize: 24,
-//     fontWeight: 'bold',
-//     marginBottom: 20,
-//     textAlign: 'center',
-//   },
-//   // + button styles
-//   plusButton: {
-//     position: 'absolute',
-//     top: 30,
-//     left: '50%',
-//     transform: [{ translateX: -25 }],
-//     backgroundColor: '#007BFF',
-//     borderRadius: 50,
-//     width: 50,
-//     height: 50,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//   },
-//   plusButtonText: {
-//     color: 'white',
-//     fontSize: 30,
-//     fontWeight: 'bold',
-//   },
-//   addIssueContainer: {
-//     flexDirection: 'row',
-//     marginBottom: 20,
-//     alignItems: 'center',
-//   },
-//   input: {
-//     borderWidth: 1,
-//     borderColor: '#ccc',
-//     padding: 10,
-//     width: '80%',
-//     marginRight: 10,
-//     borderRadius: 4,
-//   },
-//   issueContainer: {
-//     marginBottom: 10,
-//     borderWidth: 1,
-//     borderColor: '#ccc',
-//     padding: 10,
-//     borderRadius: 4,
-//   },
-//   issueTitle: {
-//     fontSize: 18,
-//     fontWeight: 'bold',
-//   },
-//   issueDetails: {
-//     marginTop: 10,
-//     paddingLeft: 10,
-//     paddingTop: 5,
-//     borderTopWidth: 1,
-//     borderTopColor: '#eee',
-//   },
-//   detailsInput: {
-//     borderWidth: 1,
-//     borderColor: '#ccc',
-//     padding: 10,
-//     width: '100%',
-//     borderRadius: 4,
-//   },
-// });
-
-// export default UserHomePage;
-
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router'; 
+import { useGlobalSearchParams } from 'expo-router';
 
 interface Issue {
   id: string;
@@ -176,20 +12,19 @@ interface Issue {
 const UserHomePage = () => {
   const router = useRouter(); 
   const [issues, setIssues] = useState<Issue[]>([]);
-  const [newIssue, setNewIssue] = useState<string>('');
   const [expandedIssue, setExpandedIssue] = useState<string | null>(null);
+  const { id, title, details } = useGlobalSearchParams();
 
-  const addIssue = () => {
-    if (newIssue.trim()) {
+  useEffect(() => {
+    if (id && title && details) {
       const newIssueObj: Issue = {
-        id: Date.now().toString(),
-        title: newIssue,
-        details: 'More information about this issue',
+        id: id.toString(),
+        title: title.toString(),
+        details: details.toString(),
       };
-      setIssues([...issues, newIssueObj]);
-      setNewIssue('');
+      setIssues((prevIssues) => [...prevIssues, newIssueObj]);
     }
-  };
+  }, [id, title, details]);
 
   const handleIssueClick = (id: string) => {
     setExpandedIssue(expandedIssue === id ? null : id);
@@ -199,11 +34,26 @@ const UserHomePage = () => {
     router.push('/create_issue');
   };
 
+  // Handle issue deletion
+  const deleteIssue = (id: string) => {
+    setIssues(issues.filter(issue => issue.id !== id)); // Filter out the issue by id
+  };
+
   const renderIssue = ({ item }: { item: Issue }) => (
     <View style={styles.issueContainer}>
-      <TouchableOpacity onPress={() => handleIssueClick(item.id)}>
-        <Text style={styles.issueTitle}>{item.title}</Text>
-      </TouchableOpacity>
+      <View style={styles.issueTitleContainer}>
+        <TouchableOpacity onPress={() => handleIssueClick(item.id)}>
+          <Text style={styles.issueTitle}>{item.title}</Text>
+        </TouchableOpacity>
+
+        {/* Only show delete button if the issue is not expanded */}
+        {expandedIssue !== item.id && (
+          <TouchableOpacity onPress={() => deleteIssue(item.id)} style={styles.deleteButton}>
+            <Text style={styles.deleteButtonText}>-</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+
       {expandedIssue === item.id && (
         <View style={styles.issueDetails}>
           <Text>{item.details}</Text>
@@ -216,8 +66,6 @@ const UserHomePage = () => {
     <View style={styles.container}>
       <Text style={styles.header}>Issues</Text>
 
-      
-
       <TouchableOpacity style={styles.addButton} onPress={navigateToCreateIssue}>
         <Text style={styles.addButtonText}>+</Text>
       </TouchableOpacity>
@@ -226,6 +74,7 @@ const UserHomePage = () => {
         data={issues}
         renderItem={renderIssue}
         keyExtractor={(item) => item.id}
+        contentContainerStyle={styles.issueList} 
       />
     </View>
   );
@@ -243,37 +92,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     textAlign: 'center',
   },
-  addIssueContainer: {
-    flexDirection: 'row',
-    marginBottom: 20,
-    alignItems: 'center',
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 10,
-    width: '80%',
-    marginRight: 10,
-    borderRadius: 4,
-  },
-  issueContainer: {
-    marginBottom: 10,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 10,
-    borderRadius: 4,
-  },
-  issueTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  issueDetails: {
-    marginTop: 10,
-    paddingLeft: 10,
-    paddingTop: 5,
-    borderTopWidth: 1,
-    borderTopColor: '#eee',
-  },
   addButton: {
     position: 'absolute',
     top: 50,
@@ -287,18 +105,44 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: '#fff',
   },
+  issueContainer: {
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    padding: 10,
+    borderRadius: 4,
+  },
+  issueTitleContainer: {
+    flexDirection: 'row', // This keeps the title and delete button horizontal
+    justifyContent: 'space-between', // Space between title and delete button
+    alignItems: 'center', // Center content vertically
+  },
+  issueTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    flex: 1, // Ensures title takes available space
+  },
+  issueDetails: {
+    marginTop: 10,
+    paddingLeft: 10,
+    paddingTop: 5,
+    borderTopWidth: 1,
+    borderTopColor: '#eee',
+  },
+  deleteButton: {
+    backgroundColor: '#FF6347', // Red background for delete button
+    padding: 5,
+    borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  deleteButtonText: {
+    fontSize: 24,
+    color: '#fff',
+  },
+  issueList: {
+    marginTop: 80, 
+  },
 });
 
 export default UserHomePage;
-
-
-{/* <View style={styles.addIssueContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter new health issue"
-          value={newIssue}
-          onChangeText={setNewIssue}
-          onSubmitEditing={addIssue} 
-          returnKeyType="done" 
-        />
-      </View> */}
