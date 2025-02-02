@@ -2,9 +2,6 @@
   "expo": {
     "name": "doctor-ai",
     "slug": "doctor-ai",
-    "extra": {
-      "GEMINI_API_KEY": "AIzaSyAQzJVq-Du0w0L6r4cVr7FsdlPTh8tZ45U"
-    },
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",

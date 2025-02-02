@@ -14,7 +14,7 @@ const CreateIssueScreen = () => {
   const [error, setError] = useState<string | null>(null);
   const [tappedElements, setTappedElements] = useState<string[]>([]); // Example state for body parts
   const [tappedElementsSkeletal, setTappedElementsSkeletal] = useState<Set<string>>(new Set()); // Example for skeletal parts
-  const GEMINI_API_KEY = Constants.manifest?.extra?.GEMINI_API_KEY;
+  const GEMINI_API_KEY = "AIzaSyAQzJVq-Du0w0L6r4cVr7FsdlPTh8tZ45U"
   const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`;
 
   const prompt = "You are a helpful agent which will read in JSON descriptions of user's pain points and provide a bulleted list of suggestions for their continued care. You will first summarize potential causes, and then suggest treatment options for each of these causes. Here is the description: "
@@ -23,7 +23,7 @@ const CreateIssueScreen = () => {
     setLoading(true);
     setError(null);
     setResponseText("");
-
+    console.log('handleCreateIssue called')
     try {
       // Make API call to submit the issue
       const response = await fetch(GEMINI_API_URL, {
@@ -43,6 +43,7 @@ const CreateIssueScreen = () => {
 
       if (!response.ok) {
         const errorText = await response.text();
+        console.log(errorText);
         throw new Error(`Error: ${response.status} - ${errorText}`);
       }
 
@@ -50,12 +51,12 @@ const CreateIssueScreen = () => {
       const generatedText =
         data?.candidates?.[0]?.content?.parts?.[0]?.text || "No response received.";
       setResponseText(generatedText);
-
+      console.log(generatedText);
       // After submitting the data, we can create the issue object
       const newIssue = {
         id: Date.now().toString(),
         title: issueDetails,
-        details: `Pain Severity: ${painSeverity}`,
+        details: `${generatedText}`,
         bodyParts: tappedElements,
         skeletalParts: Array.from(tappedElementsSkeletal),
         generatedText: generatedText
