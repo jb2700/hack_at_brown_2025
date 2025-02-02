@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, Button, StyleSheet } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { useRouter } from 'expo-router'; 
-
+import BodyView from '@/components/BodyView'
 const CreateIssueScreen = () => {
   const router = useRouter(); 
   const [painSeverity, setPainSeverity] = useState<number>(0);
@@ -13,17 +13,21 @@ const CreateIssueScreen = () => {
       id: Date.now().toString(),
       title: issueDetails,
       details: `Pain Severity: ${painSeverity}`,
+      bodyParts: tappedElements,
+      skeletalParts: Array.from(tappedElementsSkeletal),
     };
-
+    console.log(newIssue);
     router.push(`/home?id=${newIssue.id}&title=${newIssue.title}&details=${newIssue.details}`);
   };
+  const [tappedElements, setTappedElements] = useState<{ slug: string; intensity: number; side: "front" | "back" }[]>([]);
+  const [tappedElementsSkeletal, setTappedElementsSkeletal] = useState(new Set<string>());
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Text style={styles.header}>Create a New Issue</Text>
 
       <Text style={styles.description}>
-        Please provide details about the issue you are facing. Use the scale below to rate the pain severity from 0 to 10.
+        Tell us what hurts and where. Our custom agent will carefully and thoroughly research potential causes. We will then suggest actionable treatment options and exercises for your specific needs.
       </Text>
 
       <TextInput
@@ -35,7 +39,7 @@ const CreateIssueScreen = () => {
       />
 
       <View style={styles.painSeverityContainer}>
-        <Text style={styles.painSeverityLabel}>Pain Severity: {painSeverity}</Text>
+      <Text style={styles.header}>Pain Severity: {painSeverity}</Text>
         <Slider
           style={styles.slider}
           minimumValue={0}
@@ -48,17 +52,37 @@ const CreateIssueScreen = () => {
           thumbTintColor="#FF6347"
         />
       </View>
-
-      <Button title="Finish Creating Issue" onPress={handleCreateIssue} />
+      <BodyView tappedElements={tappedElements}
+        setTappedElements={setTappedElements}
+        tappedElementsSkeletal={tappedElementsSkeletal}
+        setTappedElementsSkeletal={setTappedElementsSkeletal}/>
+    <View style={styles.buttonContainer}>
+    <TouchableOpacity onPress={handleCreateIssue} style={styles.button}>
+      <Text style={styles.button}>Add Issue</Text>
+    </TouchableOpacity>
     </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  buttonContainer: {
+    marginBottom: 60, // Adjust margin here
+  },
+  button: {
+    color: "#fff",
+    backgroundColor: '#1177C7',
+    padding: 8,
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+
   container: {
+    marginTop: 100,
     flex: 1,
     padding: 20,
     backgroundColor: '#fff',
+    marginBottom: 150
   },
   header: {
     fontSize: 24,

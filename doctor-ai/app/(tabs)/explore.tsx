@@ -20,8 +20,7 @@ export default function TabTwoScreen() {
       <ThemedText>This view allows users to select a body part. It is part of the issue creation screen. </ThemedText>
       {/* Render the BodyModel component here */}
       <ThemedView style={styles.bodyModelContainer}>
-      <SkeletalModel/>
-      <BodyModel/>
+      <BodyView/>
       </ThemedView>
       </ScrollView>
   );

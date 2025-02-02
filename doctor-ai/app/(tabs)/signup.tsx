@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, TextInput, TouchableOpacity, StyleSheet, View } from 'react-native';
+import { Text, TextInput, TouchableOpacity, StyleSheet, View, ImageBackground} from 'react-native';
 import { useAuth } from './../../hooks/useAuth'; 
 import { useNavigation } from '@react-navigation/native'; 
 
@@ -25,7 +25,12 @@ const SignupScreen = () => {
   };
 
   return (
+    <ImageBackground 
+    source={require('../../assets/images/signup_joshua_hilbert.jpg')}  // Update the path to your image
+    style={styles.background}
+  >
     <View style={styles.container}>
+      <Text style={styles.header}>Be ready for your next apppointment.</Text>
       {errorMessage && <Text style={styles.error}>{errorMessage}</Text>}
       <TextInput
         style={styles.input}
@@ -54,17 +59,31 @@ const SignupScreen = () => {
         <Text style={styles.link}>Already have an account? Log In</Text>
       </TouchableOpacity> */}
     </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 20,
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
     padding: 20,
   },
+  header: {
+    color: 'white',
+    fontSize: 32,
+    fontWeight: 'bold',
+    marginBottom: 80,
+    textAlign: 'left',
+  },
   input: {
     height: 50,
+    backgroundColor: 'white',
     borderColor: 'gray',
     borderWidth: 1,
     marginBottom: 10,
