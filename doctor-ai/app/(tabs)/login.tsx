@@ -3,6 +3,8 @@ import { View, TextInput, TouchableOpacity, Text, StyleSheet, ImageBackground } 
 import { useRouter } from 'expo-router';
 import { supabase } from '../../lib/supabase'; 
 
+
+// Be ready for your next appointment! -> Some Slogan and make frontend look nicer 
 const LoginPage = () => {
   const router = useRouter();
   const [email, setEmail] = useState('');

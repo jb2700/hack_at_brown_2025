@@ -8,7 +8,7 @@ export default function HomeScreen() {
   return (
     <View>
       <Text>Welcome to Doctor AI!</Text>
-      <Button title="Go to Login" onPress={() => router.push('/login')} />
+      <Button title="Go to Login" onPress={() => router.push('/chat_text')} />
     </View>
   );
 }
