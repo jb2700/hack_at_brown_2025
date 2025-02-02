@@ -20,54 +20,54 @@ const CreateIssueScreen = () => {
   const prompt = "You are a helpful agent which will read in JSON descriptions of user's pain points and provide a bulleted list of suggestions for their continued care. You will first summarize potential causes, and then suggest treatment options for each of these causes. Here is the description: "
 
   const handleCreateIssue = async () => {
-    setLoading(true);
-    setError(null);
-    setResponseText("");
+    // setLoading(true);
+    // setError(null);
+    // setResponseText("");
 
-    try {
-      // Make API call to submit the issue
-      const response = await fetch(GEMINI_API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          contents: [
-            {
-              role: "user",
-              parts: [{ text: prompt + issueDetails }],
-            },
-          ],
-        }),
-      });
+    // try {
+    //   // Make API call to submit the issue
+    //   const response = await fetch(GEMINI_API_URL, {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({
+    //       contents: [
+    //         {
+    //           role: "user",
+    //           parts: [{ text: prompt + issueDetails }],
+    //         },
+    //       ],
+    //     }),
+    //   });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Error: ${response.status} - ${errorText}`);
-      }
+    //   if (!response.ok) {
+    //     const errorText = await response.text();
+    //     throw new Error(`Error: ${response.status} - ${errorText}`);
+    //   }
 
-      const data = await response.json();
-      const generatedText =
-        data?.candidates?.[0]?.content?.parts?.[0]?.text || "No response received.";
-      setResponseText(generatedText);
+    //   const data = await response.json();
+    //   const generatedText =
+    //     data?.candidates?.[0]?.content?.parts?.[0]?.text || "No response received.";
+    //   setResponseText(generatedText); // 
 
-      // After submitting the data, we can create the issue object
+      // After submitting the data, we can create the issue object 
       const newIssue = {
         id: Date.now().toString(),
-        title: issueDetails,
-        details: `Pain Severity: ${painSeverity}`,
+        title: issueDetails, // change this to be the title of the llm 
+        details: painSeverity, 
         bodyParts: tappedElements,
         skeletalParts: Array.from(tappedElementsSkeletal),
-        generatedText: generatedText
+        generatedText: "bad"
       };
 
       console.log("New Issue Created:", newIssue);
       router.push(`/home?id=${newIssue.id}&title=${newIssue.title}&details=${newIssue.details}`);
-    } catch (err) {
-      setError((err as Error).message);
-    } finally {
-      setLoading(false);
-    }
+    // } catch (err) {
+    //   setError((err as Error).message);
+    // } finally {
+    //   setLoading(false);
+    // }
   };
 
   return (
