@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, ScrollView } from 'react-native';
-import { getChatGPTResponse } from './../../components/ChatGptService'; // Import the service
+import { getChatGPTResponse } from '../../components/ChatGptService'; // Import the service
 
 const Chat_text = () => {
   const [prompt, setPrompt] = useState('');
