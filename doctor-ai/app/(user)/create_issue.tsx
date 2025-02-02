@@ -124,6 +124,20 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignItems: 'center',
   },
+  // button: {
+  //   position: 'absolute', // This allows for custom positioning
+  //   top: 1, // Adjust this value to move the button higher or lower
+  //   left: '50%', // Centers the button horizontally
+  //   transform: [{ translateX: -75 }], // Adjusts the button position by moving it to the left
+  //   backgroundColor: '#007BFF', // Button color
+  //   paddingVertical: 12, // Vertical padding
+  //   paddingHorizontal: 20, // Horizontal padding
+  //   borderRadius: 25, // Rounded corners
+  //   shadowColor: '#000', // Shadow color
+  //   shadowOffset: { width: 0, height: 4 }, // Shadow offset
+  //   shadowOpacity: 0.1, // Shadow opacity
+  //   shadowRadius: 6, // Shadow radius
+  // },
 
   container: {
     // marginTop: 20,

@@ -18,6 +18,9 @@ const UserHomePage = () => {
 
   useEffect(() => {
     if (id && title && details) {
+      const issueExists = issues.some(issue => issue.id === id.toString());
+      if (!issueExists) {
+      // console.log("new issue created");
       const newIssueObj: Issue = {
         id: id.toString(),
         title: title.toString(),
@@ -25,6 +28,7 @@ const UserHomePage = () => {
       };
       setIssues((prevIssues) => [...prevIssues, newIssueObj]);
     }
+  }
   }, [id, title, details]);
 
   const handleIssueClick = (id: string) => {
@@ -32,6 +36,7 @@ const UserHomePage = () => {
   };
 
   const navigateToCreateIssue = () => {
+    console.log("CLICKED");
     router.push('/create_issue');
   };
 
@@ -65,6 +70,10 @@ const UserHomePage = () => {
     <View style={styles.container}>
       <Text style={styles.header}>Issues</Text>
 
+      <Text style={styles.infoText}>
+        The information provided here is for general informational purposes only and is not intended to be a substitute for professional medical advice, diagnosis, or treatment. This content is to help inform your next conversation with your doctor.
+      </Text>
+
       <TouchableOpacity style={styles.addButton} onPress={navigateToCreateIssue}>
         <Text style={styles.addButtonText}>+</Text>
       </TouchableOpacity>
@@ -94,16 +103,17 @@ const styles = StyleSheet.create({
   },
   addButton: {
     position: 'absolute',
-    top: 60,
-    left: '55%',
+    top: 190,
+    left: '57%',
     transform: [{ translateX: -20 }],
     backgroundColor: '#007BFF',
-    padding: 15,
+    padding: 10,
     borderRadius: 50,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
     shadowRadius: 6,
+    zIndex: 10,
   },
   addButtonText: {
     fontSize: 30,
@@ -153,6 +163,13 @@ const styles = StyleSheet.create({
   },
   issueList: {
     marginTop: 80, 
+  },
+  infoText: {
+    fontSize: 14,
+    color: '#333',
+    marginBottom: 20,
+    textAlign: 'center',  // This will center-align the text
+    paddingHorizontal: 10, // Adds some horizontal padding for better readability
   },
 });
 
