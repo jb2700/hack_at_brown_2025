@@ -59,16 +59,16 @@ const CreateIssueScreen = () => {
         details: `${generatedText}`,
         bodyParts: tappedElements,
         skeletalParts: Array.from(tappedElementsSkeletal),
-        generatedText: generatedText
+        generatedText: "bad"
       };
 
       console.log("New Issue Created:", newIssue);
       router.push(`/home?id=${newIssue.id}&title=${newIssue.title}&details=${newIssue.details}`);
-    } catch (err) {
-      setError((err as Error).message);
-    } finally {
-      setLoading(false);
-    }
+    // } catch (err) {
+    //   setError((err as Error).message);
+    // } finally {
+    //   setLoading(false);
+    // }
   };
 
   return (
