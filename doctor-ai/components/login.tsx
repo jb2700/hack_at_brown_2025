@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, Text, StyleSheet, ImageBackground } from 'react-native';
 import { useRouter } from 'expo-router';
-import { supabase } from '../../lib/supabase'; 
-
+import { supabase } from '../lib/supabase'; 
 
 // Be ready for your next appointment! -> Some Slogan and make frontend look nicer 
 const LoginPage = () => {
@@ -22,7 +21,7 @@ const LoginPage = () => {
       // After login, check the session
       const session = await supabase.auth.getSession();
       if (session) {
-        router.push('/home'); 
+        router.push('/(user)/home'); 
       } else {
         console.log('No active session.');
       }
