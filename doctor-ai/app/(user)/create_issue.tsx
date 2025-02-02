@@ -1,26 +1,74 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, Button, StyleSheet } from 'react-native';
+import { View, Text, Modal, TextInput, TouchableOpacity, ScrollView, Button, StyleSheet } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { useRouter } from 'expo-router'; 
 import BodyView from '@/components/BodyView'
+import Constants from "expo-constants";
+
 const CreateIssueScreen = () => {
   const router = useRouter(); 
   const [painSeverity, setPainSeverity] = useState<number>(0);
-  const [issueDetails, setIssueDetails] = useState<string>('');
+  const [issueDetails, setIssueDetails] = useState<string>("");
+  const [loading, setLoading] = useState(false);
+  const [responseText, setResponseText] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [tappedElements, setTappedElements] = useState<string[]>([]); // Example state for body parts
+  const [tappedElementsSkeletal, setTappedElementsSkeletal] = useState<Set<string>>(new Set()); // Example for skeletal parts
+  const GEMINI_API_KEY = Constants.manifest?.extra?.GEMINI_API_KEY;
+  const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`;
 
-  const handleCreateIssue = () => {
-    const newIssue = {
-      id: Date.now().toString(),
-      title: issueDetails,
-      details: `Pain Severity: ${painSeverity}`,
-      bodyParts: tappedElements,
-      skeletalParts: Array.from(tappedElementsSkeletal),
-    };
-    console.log(newIssue);
-    router.push(`/home?id=${newIssue.id}&title=${newIssue.title}&details=${newIssue.details}`);
+  const prompt = "You are a helpful agent which will read in JSON descriptions of user's pain points and provide a bulleted list of suggestions for their continued care. You will first summarize potential causes, and then suggest treatment options for each of these causes. Here is the description: "
+
+  const handleCreateIssue = async () => {
+    setLoading(true);
+    setError(null);
+    setResponseText("");
+
+    try {
+      // Make API call to submit the issue
+      const response = await fetch(GEMINI_API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          contents: [
+            {
+              role: "user",
+              parts: [{ text: prompt + issueDetails }],
+            },
+          ],
+        }),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Error: ${response.status} - ${errorText}`);
+      }
+
+      const data = await response.json();
+      const generatedText =
+        data?.candidates?.[0]?.content?.parts?.[0]?.text || "No response received.";
+      setResponseText(generatedText);
+
+      // After submitting the data, we can create the issue object
+      const newIssue = {
+        id: Date.now().toString(),
+        title: issueDetails,
+        details: `Pain Severity: ${painSeverity}`,
+        bodyParts: tappedElements,
+        skeletalParts: Array.from(tappedElementsSkeletal),
+        generatedText: generatedText
+      };
+
+      console.log("New Issue Created:", newIssue);
+      router.push(`/home?id=${newIssue.id}&title=${newIssue.title}&details=${newIssue.details}`);
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setLoading(false);
+    }
   };
-  const [tappedElements, setTappedElements] = useState<{ slug: string; intensity: number; side: "front" | "back" }[]>([]);
-  const [tappedElementsSkeletal, setTappedElementsSkeletal] = useState(new Set<string>());
 
   return (
     <ScrollView style={styles.container}>
@@ -78,11 +126,11 @@ const styles = StyleSheet.create({
   },
 
   container: {
-    marginTop: 100,
+    // marginTop: 20,
     flex: 1,
     padding: 20,
     backgroundColor: '#fff',
-    marginBottom: 150
+    // marginBottom: 50
   },
   header: {
     fontSize: 24,
