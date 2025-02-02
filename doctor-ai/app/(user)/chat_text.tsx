@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import ReactMarkdown from "react-markdown";
-const GEMINI_API_KEY = "AIzaSyAQzJVq-Du0w0L6r4cVr7FsdlPTh8tZ45U";
+// import ReactMarkdown from "react-markdown";
+import Constants from "expo-constants";
+const GEMINI_API_KEY = Constants.manifest?.extra?.GEMINI_API_KEY;
 const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`;
 
 const GeminiTextSubmit: React.FC = () => {
@@ -77,7 +78,7 @@ const GeminiTextSubmit: React.FC = () => {
       {responseText && (
         <div style={{ marginTop: "20px", padding: "10px", background: "#f4f4f4", borderRadius: "5px" }}>
           <strong>Response:</strong>
-          <ReactMarkdown>{responseText}</ReactMarkdown>
+          <p>{responseText}</p>
         </div>
       )}
     </div>
