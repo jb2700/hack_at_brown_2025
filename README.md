@@ -1,4 +1,4 @@
-# hack_at_brown_2025
+# SkeletonKey: Precision Diagnoses Before You See a Doctor
 
 To view the application on Expo Mobile, run this command locally. 
 `npx expo start`
